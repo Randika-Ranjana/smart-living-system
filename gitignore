@@ -15,3 +15,7 @@ frontend/build/
 .DS_Store
 .env
 *.log
+
+# Backend
+backend/node_modules/
+backend/serviceAccountKey.json
