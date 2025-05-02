@@ -1,21 +1,19 @@
-# Node.js
+# Node.js backend
 backend/node_modules/
 backend/.env
+backend/serviceAccountKey.json
 
-# React
+# React frontend
 frontend/node_modules/
 frontend/.env
 frontend/build/
 
-# Arduino
+# Arduino build artifacts
 *.ino.*
 *.bin
 
-# General
+# General system files and logs
 .DS_Store
 .env
 *.log
 
-# Backend
-backend/node_modules/
-backend/serviceAccountKey.json
