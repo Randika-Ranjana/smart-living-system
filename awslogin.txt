@@ -1,0 +1,7 @@
+ssh -i "E:/The-Architects-Firebase/smart-living-system/awsbackendkey.pem" ubuntu@13.49.223.27
+
+
+scp -i "E:/The-Architects-Firebase/smart-living-system/awsbackendkey.pem" index.js firebase.js package.json package-lock.json serviceAccountKey.json ubuntu@13.49.223.27:~/backend/
+scp -i "E:/The-Architects-Firebase/smart-living-system/awsbackendkey.pem" -r routes ubuntu@13.49.223.27:~/backend/
+
+

@@ -16,9 +16,9 @@
 const char* ssid = "Randika";
 const char* password = "987654321";
 
-// Backend URLs - 🔁 Replace with actual public URL when hosted online
-const char* postUrl = "http://192.168.183.212:4000/esp32-data";
-const char* getUrl = "http://192.168.183.212:4000/desired-temp";
+// Backend URLs - Using EC2 instance's public DNS
+const char* postUrl = "http://ec2-13-49-223-27.eu-north-1.compute.amazonaws.com:4000/esp32-data";
+const char* getUrl = "http://ec2-13-49-223-27.eu-north-1.compute.amazonaws.com:4000/desired-temp";
 
 // Device ID
 const char* deviceId = "esp32_devkit_01";

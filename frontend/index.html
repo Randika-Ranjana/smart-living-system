@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Heating System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold">Smart Heating Control</h1>
+                <nav>
+                    <a href="login.html" class="px-4 py-2 bg-white text-blue-600 rounded-lg font-medium">Login</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Banner Slideshow -->
+        <section class="mb-12">
+            <div id="banner-slideshow" class="relative h-64 md:h-96 rounded-lg overflow-hidden shadow-lg">
+                <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center">
+                    <h2 class="text-3xl md:text-5xl font-bold text-white text-center px-4">Smart Heating Solutions for Your Home</h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- Weather Forecast -->
+        <section class="mb-12">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Weather Forecast</h2>
+                <div id="weather-container">
+                    <div id="weather-loading" class="text-center py-8">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+                        <p class="mt-2">Loading weather data...</p>
+                    </div>
+                    <div id="weather-content" class="hidden">
+                        <div id="current-weather" class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 id="weather-location" class="text-xl font-semibold"></h3>
+                                <p id="weather-date" class="text-gray-600"></p>
+                            </div>
+                            <div class="flex items-center">
+                                <div id="weather-icon" class="text-5xl mr-4"></div>
+                                <div>
+                                    <span id="weather-temp" class="text-4xl font-bold"></span>
+                                    <span class="text-xl">°C</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="hourly-forecast" class="overflow-x-auto">
+                            <div class="flex space-x-4 pb-4">
+                                <!-- Hourly forecast items will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                    <div id="weather-error" class="hidden text-center py-8 text-red-500"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="text-blue-500 text-4xl mb-4">🌡️</div>
+                <h3 class="text-xl font-bold mb-2">Smart Temperature Control</h3>
+                <p class="text-gray-600">Automatically adjust your heating based on your preferences and schedule.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="text-blue-500 text-4xl mb-4">📊</div>
+                <h3 class="text-xl font-bold mb-2">Energy Monitoring</h3>
+                <p class="text-gray-600">Track your energy usage and save money on your heating bills.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="text-blue-500 text-4xl mb-4">📱</div>
+                <h3 class="text-xl font-bold mb-2">Remote Access</h3>
+                <p class="text-gray-600">Control your heating from anywhere using your smartphone.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2023 Smart Heating Control System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/weather.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

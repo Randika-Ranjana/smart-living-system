@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Smart Heating System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-100">
+    <div class="flex flex-col min-h-screen">
+        <header class="bg-blue-600 text-white shadow-lg">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-xl font-bold">Smart Heating Control</h1>
+                    <div class="flex items-center space-x-4">
+                        <span id="user-email" class="hidden md:inline"></span>
+                        <button id="logout-btn" class="px-3 py-1 bg-white text-blue-600 rounded-lg text-sm font-medium">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex flex-1">
+            <!-- Sidebar -->
+            <aside class="w-64 bg-white shadow-lg hidden md:block">
+                <nav class="p-4">
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="#" class="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Devices</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Schedule</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Energy Usage</a>
+                        </li>
+                        <li>
+                            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100">Settings</a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 p-4 md:p-8">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold mb-4">Your Heating Dashboard</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Device cards will be inserted here -->
+                        <div id="devices-loading" class="col-span-full text-center py-8">
+                            <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+                            <p class="mt-2">Loading your devices...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+                    <h2 class="text-xl font-bold mb-4">Temperature Trends</h2>
+                    <div class="flex space-x-2 mb-4">
+                        <button data-range="24h" class="time-range-btn px-3 py-1 bg-blue-600 text-white rounded-lg text-sm">24h</button>
+                        <button data-range="7d" class="time-range-btn px-3 py-1 bg-gray-200 rounded-lg text-sm">7d</button>
+                        <button data-range="30d" class="time-range-btn px-3 py-1 bg-gray-200 rounded-lg text-sm">30d</button>
+                    </div>
+                    <canvas id="temperature-chart" height="300"></canvas>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h2 class="text-xl font-bold mb-4">Weather Forecast</h2>
+                        <div id="dashboard-weather">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h3 id="dashboard-weather-location" class="text-lg font-semibold"></h3>
+                                    <p id="dashboard-weather-date" class="text-gray-600 text-sm"></p>
+                                </div>
+                                <div class="flex items-center">
+                                    <div id="dashboard-weather-icon" class="text-4xl mr-3"></div>
+                                    <div>
+                                        <span id="dashboard-weather-temp" class="text-3xl font-bold"></span>
+                                        <span class="text-lg">°C</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="dashboard-hourly-forecast" class="overflow-x-auto">
+                                <div class="flex space-x-4 pb-2">
+                                    <!-- Hourly forecast items will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h2 class="text-xl font-bold mb-4">Quick Actions</h2>
+                        <div class="space-y-4">
+                            <button class="w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Turn All Heating On</button>
+                            <button class="w-full py-2 px-4 bg-gray-200 rounded-lg hover:bg-gray-300">Turn All Heating Off</button>
+                            <button class="w-full py-2 px-4 bg-gray-200 rounded-lg hover:bg-gray-300">Set Vacation Mode</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/weather.js"></script>
+</body>
+</html>
