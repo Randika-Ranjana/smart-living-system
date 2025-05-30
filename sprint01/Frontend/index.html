@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Living</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏠 Smart Living</h1>
+      <p>Intelligent home temperature management</p>
+    </div>
+
+    <!-- Device Selection -->
+    <div class="glass-card device-selector">
+      <div class="card-header">
+        <h2>🔌 Device Connection</h2>
+      </div>
+      <div class="input-group">
+        <input type="text" id="deviceId" placeholder="Enter device ID (e.g. room1)" />
+        <button id="loadBtn" onclick="loadDeviceData()">
+          <span class="btn-text">Connect</span>
+          <div class="btn-loader"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Current Status -->
+    <div class="status-grid">
+      <div class="glass-card status-card temperature-card">
+        <div class="status-icon">🌡️</div>
+        <div class="status-value" id="temperature">--</div>
+        <div class="status-label">Temperature °C</div>
+        <div class="status-trend" id="tempTrend"></div>
+      </div>
+      
+      <div class="glass-card status-card humidity-card">
+        <div class="status-icon">💧</div>
+        <div class="status-value" id="humidity">--</div>
+        <div class="status-label">Humidity %</div>
+        <div class="status-trend" id="humidityTrend"></div>
+      </div>
+    </div>
+
+    <!-- Temperature Control -->
+    <div class="glass-card temp-control-card">
+      <div class="card-header">
+        <h2>🎯 Temperature Control</h2>
+      </div>
+      <div class="temp-control-container">
+        <div class="circular-slider">
+          <svg class="slider-svg" width="280" height="280" viewBox="0 0 280 280">
+            <circle class="slider-track" cx="140" cy="140" r="120" />
+            <circle class="slider-progress" cx="140" cy="140" r="120" id="progressCircle" />
+          </svg>
+          <div class="slider-content">
+            <div class="temp-display" id="desiredTempDisplay">20</div>
+            <div class="temp-unit">°C</div>
+            <div class="temp-label">Target</div>
+          </div>
+          <div class="slider-handle" id="sliderHandle"></div>
+        </div>
+        <div class="temp-controls">
+          <button class="temp-btn" onclick="adjustTemp(-0.5)">-</button>
+          <input type="number" id="desiredTemp" step="0.1" min="5" max="35" value="20" />
+          <button class="temp-btn" onclick="adjustTemp(0.5)">+</button>
+        </div>
+        <button class="update-btn" onclick="updateDesiredTemp()">
+          <span>Update Temperature</span>
+          <div class="btn-ripple"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- History Chart -->
+    <div class="glass-card chart-card">
+      <div class="card-header">
+        <h2>📊 Temperature History</h2>
+        <select id="historyPeriod" onchange="loadChart()">
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
+      </div>
+      <div class="chart-container">
+        <canvas id="historyChart"></canvas>
+        <div class="chart-loading" id="chartLoading">
+          <div class="loading-spinner"></div>
+          <p>Loading chart data...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button class="quick-btn eco-mode" onclick="setEcoMode()">
+        <span class="quick-icon">🌱</span>
+        <span>Eco Mode</span>
+      </button>
+      <button class="quick-btn comfort-mode" onclick="setComfortMode()">
+        <span class="quick-icon">🏠</span>
+        <span>Comfort</span>
+      </button>
+      <button class="quick-btn away-mode" onclick="setAwayMode()">
+        <span class="quick-icon">✈️</span>
+        <span>Away</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Notification System -->
+  <div id="notifications" class="notifications"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
