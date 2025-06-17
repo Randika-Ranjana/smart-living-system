@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Living Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-dark text-light font-['Inter'] min-h-screen">
+  <!-- Navigation -->
+    <nav class="bg-brand-dark-purple shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <a href="index.html" class="text-xl font-bold text-white flex items-center">
+            <span class="mr-2">🏠</span> Smart Living
+          </a>
+        </div>
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center">
+          <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-brand-magenta focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" onclick="toggleMobileMenu()">
+            <span class="sr-only">Open main menu</span>
+            <!-- Hamburger icon -->
+            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <!-- Close icon -->
+            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <!-- Desktop menu -->
+        <div class="hidden md:block">
+          <div class="ml-10 flex items-baseline space-x-4">
+            <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-brand-magenta transition-colors">Home</a>
+            <a href="aboutus.html" class="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-brand-magenta transition-colors">About</a>
+            <a href="contactus.html" class="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-brand-magenta transition-colors">Contact</a>
+            <div id="authSection" class="flex items-center space-x-2 ml-4">
+              <a href="login.html" class="px-3 py-2 rounded-md text-sm font-medium bg-brand-magenta text-white hover:bg-opacity-80 transition-colors">Login</a>
+              <a href="signup.html" class="px-3 py-2 rounded-md text-sm font-medium border border-brand-magenta text-white hover:bg-brand-magenta transition-colors">Sign Up</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden hidden" id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-brand-magenta">Home</a>
+        <a href="aboutus.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-brand-magenta">About</a>
+        <a href="contactus.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-brand-magenta">Contact</a>
+        <div class="pt-4 border-t border-brand-magenta">
+          <a href="login.html" class="block px-3 py-2 rounded-md text-base font-medium bg-brand-magenta text-white">Login</a>
+          <a href="signup.html" class="block px-3 py-2 rounded-md text-base font-medium text-white border border-brand-magenta mt-2">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold">Dashboard</h1>
+        <p class="text-gray-400">Welcome back! Here's your home temperature overview.</p>
+      </div>
+      <div id="usernameDisplay" class="mt-4 md:mt-0 text-lg font-medium"></div>
+    </div>
+
+    <!-- Device Connection -->
+    <div class="bg-secondary rounded-xl shadow-lg p-6 mb-8">
+      <h2 class="text-xl font-bold mb-4 flex items-center">
+        <span class="mr-2">🔌</span> Device Connection
+      </h2>
+      <div class="flex flex-col md:flex-row gap-4">
+        <input 
+          type="text" 
+          id="deviceId" 
+          placeholder="Enter device ID (e.g. room1)" 
+          class="flex-grow px-4 py-3 rounded-lg bg-dark border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
+        />
+        <button 
+          id="loadBtn" 
+          onclick="loadDeviceData()"
+          class="px-6 py-3 bg-primary text-light rounded-lg hover:bg-opacity-90 transition-colors flex items-center justify-center"
+        >
+          <span class="btn-text">Connect</span>
+          <div class="btn-loader hidden ml-2">
+            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-light"></div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Status Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div class="bg-secondary rounded-xl shadow-lg p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-2xl mb-1">🌡️</div>
+            <h3 class="text-lg font-medium text-gray-400">Temperature</h3>
+            <div class="flex items-end mt-2">
+              <span id="temperature" class="text-4xl font-bold">--</span>
+              <span class="text-xl ml-1">°C</span>
+            </div>
+          </div>
+          <div id="tempTrend" class="text-sm px-3 py-1 rounded-full bg-opacity-20"></div>
+        </div>
+      </div>
+      <div class="bg-secondary rounded-xl shadow-lg p-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-2xl mb-1">💧</div>
+            <h3 class="text-lg font-medium text-gray-400">Humidity</h3>
+            <div class="flex items-end mt-2">
+              <span id="humidity" class="text-4xl font-bold">--</span>
+              <span class="text-xl ml-1">%</span>
+            </div>
+          </div>
+          <div id="humidityTrend" class="text-sm px-3 py-1 rounded-full bg-opacity-20"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Temperature Control -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <div class="bg-secondary rounded-xl shadow-lg p-6">
+        <h2 class="text-xl font-bold mb-6 flex items-center">
+          <span class="mr-2">🎯</span> Temperature Control
+        </h2>
+        
+        <div class="flex flex-col items-center">
+          <!-- Circular Slider -->
+          <div class="relative w-64 h-64 mb-8">
+            <svg class="absolute" width="256" height="256" viewBox="0 0 256 256">
+              <defs>
+                <linearGradient id="tempGradient">
+                  <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                  <stop offset="50%" style="stop-color:#10b981;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1" />
+                </linearGradient>
+              </defs>
+              <circle 
+                class="stroke-gray-700" 
+                cx="128" cy="128" r="120" 
+                fill="none" 
+                stroke-width="16"
+              />
+              <circle 
+                class="stroke-primary" 
+                cx="128" cy="128" r="120" 
+                fill="none" 
+                stroke-width="16"
+                stroke-dasharray="754"
+                stroke-dashoffset="754"
+                id="progressCircle"
+                stroke-linecap="round"
+                transform="rotate(-90 128 128)"
+              />
+            </svg>
+            <div class="absolute inset-0 flex flex-col items-center justify-center">
+              <div class="text-5xl font-bold" id="desiredTempDisplay">20</div>
+              <div class="text-gray-400">Target Temperature</div>
+            </div>
+            <div 
+              class="absolute w-8 h-8 bg-primary rounded-full cursor-pointer -translate-x-1/2 -translate-y-1/2"
+              id="sliderHandle"
+              style="left: 128px; top: 8px;"
+            ></div>
+          </div>
+          
+          <!-- Temperature Controls -->
+          <div class="flex items-center gap-4 mb-6">
+            <button 
+              onclick="adjustTemp(-0.5)"
+              class="w-12 h-12 rounded-full bg-dark flex items-center justify-center text-2xl hover:bg-primary transition-colors"
+            >
+              -
+            </button>
+            <input 
+              type="number" 
+              id="desiredTemp" 
+              step="0.1" 
+              min="5" 
+              max="35" 
+              value="20"
+              class="w-24 px-4 py-3 text-center rounded-lg bg-dark border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            <button 
+              onclick="adjustTemp(0.5)"
+              class="w-12 h-12 rounded-full bg-dark flex items-center justify-center text-2xl hover:bg-primary transition-colors"
+            >
+              +
+            </button>
+          </div>
+          
+          <button 
+            onclick="updateDesiredTemp()"
+            class="px-6 py-3 bg-primary text-light rounded-lg hover:bg-opacity-90 transition-colors w-full"
+          >
+            Update Temperature
+          </button>
+        </div>
+      </div>
+      
+      <!-- Quick Actions -->
+      <div class="bg-secondary rounded-xl shadow-lg p-6">
+        <h2 class="text-xl font-bold mb-6 flex items-center">
+          <span class="mr-2">⚡</span> Quick Actions
+        </h2>
+        
+        <div class="grid grid-cols-1 gap-4">
+          <button 
+            onclick="setEcoMode()"
+            class="flex items-center justify-between p-4 rounded-lg bg-dark hover:bg-primary transition-colors"
+          >
+            <div class="flex items-center">
+              <span class="text-2xl mr-3">🌱</span>
+              <div>
+                <div class="font-medium">Eco Mode</div>
+                <div class="text-sm text-gray-400">Energy saving (18°C)</div>
+              </div>
+            </div>
+            <span class="text-gray-400">→</span>
+          </button>
+          
+          <button 
+            onclick="setComfortMode()"
+            class="flex items-center justify-between p-4 rounded-lg bg-dark hover:bg-primary transition-colors"
+          >
+            <div class="flex items-center">
+              <span class="text-2xl mr-3">🏠</span>
+              <div>
+                <div class="font-medium">Comfort Mode</div>
+                <div class="text-sm text-gray-400">Optimal comfort (22°C)</div>
+              </div>
+            </div>
+            <span class="text-gray-400">→</span>
+          </button>
+          
+          <button 
+            onclick="setAwayMode()"
+            class="flex items-center justify-between p-4 rounded-lg bg-dark hover:bg-primary transition-colors"
+          >
+            <div class="flex items-center">
+              <span class="text-2xl mr-3">✈️</span>
+              <div>
+                <div class="font-medium">Away Mode</div>
+                <div class="text-sm text-gray-400">Energy efficient (16°C)</div>
+              </div>
+            </div>
+            <span class="text-gray-400">→</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- History Chart -->
+    <div class="bg-secondary rounded-xl shadow-lg p-6 mb-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+        <h2 class="text-xl font-bold flex items-center">
+          <span class="mr-2">📊</span> Temperature History
+        </h2>
+        <select 
+          id="historyPeriod" 
+          onchange="loadChart()"
+          class="mt-2 md:mt-0 px-4 py-2 rounded-lg bg-dark border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
+      </div>
+      
+      <div class="relative h-80">
+        <canvas id="historyChart"></canvas>
+        <div 
+          id="chartLoading" 
+          class="absolute inset-0 flex items-center justify-center bg-secondary bg-opacity-80 hidden"
+        >
+          <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p>Loading chart data...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification System -->
+  <div id="notifications" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
+
+  <script type="module">
+    import { auth } from "firebase-config.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    // Check auth state
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+      } else {
+        // Fetch user data from Firestore
+        const db = getFirestore();
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+        const username = userDoc.exists() ? userDoc.data().username || user.email : user.email;
+        
+        // Update display
+        document.getElementById('usernameDisplay').textContent = `Hello, ${username}`;
+        
+        // Update auth section in nav
+        const authSection = document.getElementById('authSection');
+        authSection.innerHTML = `
+          <span class="text-light text-sm">${user.email}</span>
+          <button onclick="logout()" class="px-3 py-2 rounded-md text-sm font-medium border border-primary text-light hover:bg-primary transition-colors">Logout</button>
+        `;
+      }
+    });
+
+    // Make logout function available
+    window.logout = function() {
+      import('auth.js').then(module => {
+        module.logout();
+      });
+    };
+  </script>
+
+  <script src="app.js"></script>
+</body>
+</html>

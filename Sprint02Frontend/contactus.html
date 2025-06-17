@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Smart Living</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-purple': '#804e69',
+            'brand-dark-purple': '#3f2739',
+            'brand-magenta': '#895051',
+            'brand-black': '#0c060f'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-brand-black text-white font-['Inter'] min-h-screen flex flex-col">
+  <!-- Navigation -->
+  <nav class="bg-brand-dark shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center">
+          <a href="index.html" class="text-xl font-bold text-white flex items-center">
+            <span class="mr-2">🏠</span> Smart Living
+          </a>
+        </div>
+        <!-- Mobile menu button -->
+        <div class="md:hidden flex items-center">
+          <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-brand-magenta focus:outline-none" aria-controls="mobile-menu" aria-expanded="false" onclick="toggleMobileMenu()">
+            <span class="sr-only">Open main menu</span>
+            <!-- Hamburger icon -->
+            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <!-- Close icon -->
+            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+        <!-- Desktop menu -->
+        <div class="hidden md:block">
+          <div class="ml-10 flex items-baseline space-x-4">
+            <a href="index.html" class="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-brand-magenta transition-colors">Home</a>
+            <a href="aboutus.html" class="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-brand-magenta transition-colors">About</a>
+            <a href="contactus.html" class="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-brand-magenta transition-colors">Contact</a>
+            <div id="authSection" class="flex items-center space-x-2 ml-4">
+              <a href="login.html" class="px-3 py-2 rounded-md text-sm font-medium bg-brand-magenta text-white hover:bg-opacity-80 transition-colors">Login</a>
+              <a href="signup.html" class="px-3 py-2 rounded-md text-sm font-medium border border-brand-magenta text-white hover:bg-brand-magenta transition-colors">Sign Up</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden hidden" id="mobile-menu">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-brand-magenta">Home</a>
+        <a href="aboutus.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-brand-magenta">About</a>
+        <a href="contactus.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-brand-magenta">Contact</a>
+        <div class="pt-4 border-t border-brand-magenta">
+          <a href="login.html" class="block px-3 py-2 rounded-md text-base font-medium bg-brand-magenta text-white">Login</a>
+          <a href="signup.html" class="block px-3 py-2 rounded-md text-base font-medium text-white border border-brand-magenta mt-2">Sign Up</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contact Hero Section -->
+  <div class="relative bg-gradient-to-r from-brand-dark-purple to-brand-purple">
+    <div class="absolute inset-0 bg-black opacity-40"></div>
+    <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center animate__animated animate__fadeIn">
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+          Contact Us
+        </h1>
+        <p class="mt-4 max-w-2xl mx-auto text-xl text-white">
+          We'd love to hear from you and help with your smart home needs
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-grow">
+    <div class="bg-brand-dark-purple rounded-xl shadow-lg p-8 animate__animated animate__fadeInUp">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div>
+          <h2 class="text-3xl font-bold mb-8 text-white">Get in Touch</h2>
+          
+          <div class="space-y-8">
+            <div class="flex items-start transform transition-all hover:scale-105">
+              <span class="text-3xl mr-4">📧</span>
+              <div>
+                <h3 class="text-xl font-medium text-white mb-2">Email</h3>
+                <p class="text-gray-300 text-lg">support@smartliving.com</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start transform transition-all hover:scale-105">
+              <span class="text-3xl mr-4">📞</span>
+              <div>
+                <h3 class="text-xl font-medium text-white mb-2">Phone</h3>
+                <p class="text-gray-300 text-lg">+1 (555) 123-4567</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start transform transition-all hover:scale-105">
+              <span class="text-3xl mr-4">🏢</span>
+              <div>
+                <h3 class="text-xl font-medium text-white mb-2">Address</h3>
+                <p class="text-gray-300 text-lg">123 Tech Street, Silicon Valley, CA 94000</p>
+              </div>
+            </div>
+            
+            <div class="bg-brand-purple rounded-lg p-6 transform transition-all hover:scale-105">
+              <h3 class="text-xl font-medium mb-4 text-white">Support Hours</h3>
+              <div class="space-y-2">
+                <p class="text-gray-200">Monday-Friday: 9AM - 6PM PST</p>
+                <p class="text-gray-200">Saturday: 10AM - 4PM PST</p>
+                <p class="text-gray-200">Sunday: Closed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <h2 class="text-3xl font-bold mb-8 text-white">Send Us a Message</h2>
+          
+          <form id="contactForm" class="space-y-6">
+            <div>
+              <input 
+                type="text" 
+                id="name" 
+                placeholder="Your Name" 
+                class="w-full px-4 py-4 rounded-lg bg-brand-black border border-brand-purple focus:outline-none focus:ring-2 focus:ring-brand-magenta focus:border-transparent text-white placeholder-gray-400 transition-all"
+                required
+              />
+            </div>
+            
+            <div>
+              <input 
+                type="email" 
+                id="email" 
+                placeholder="Your Email" 
+                class="w-full px-4 py-4 rounded-lg bg-brand-black border border-brand-purple focus:outline-none focus:ring-2 focus:ring-brand-magenta focus:border-transparent text-white placeholder-gray-400 transition-all"
+                required
+              />
+            </div>
+            
+            <div>
+              <textarea 
+                id="message" 
+                placeholder="Your Message" 
+                rows="6"
+                class="w-full px-4 py-4 rounded-lg bg-brand-black border border-brand-purple focus:outline-none focus:ring-2 focus:ring-brand-magenta focus:border-transparent text-white placeholder-gray-400 transition-all resize-none"
+                required
+              ></textarea>
+            </div>
+            
+            <button 
+              type="submit"
+              class="w-full px-8 py-4 bg-brand-magenta text-white rounded-lg hover:bg-opacity-80 transition-all transform hover:scale-105 font-medium text-lg"
+            >
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-brand-black mt-auto border-t border-brand-dark-purple">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Smart Living</h3>
+          <p class="text-gray-400">Revolutionizing home temperature control with intelligent technology.</p>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Navigation</h3>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="text-gray-400 hover:text-white transition-colors">Home</a></li>
+            <li><a href="aboutus.html" class="text-gray-400 hover:text-white transition-colors">About</a></li>
+            <li><a href="contactus.html" class="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Legal</h3>
+          <ul class="space-y-2">
+            <li><a href="privacy.html" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="terms.html" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold text-white mb-4">Connect</h3>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">Twitter</a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">Facebook</a>
+            <a href="#" class="text-gray-400 hover:text-white transition-colors">Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-12 pt-8 border-t border-brand-dark-purple text-center">
+        <p class="text-gray-400">&copy; 2025 Smart Living. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Notification System -->
+  <div id="notifications" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
+
+  <script type="module">
+    // Mock Firebase config for demo purposes
+    const mockAuth = {
+      currentUser: null
+    };
+
+    // Mock auth state handling
+    function handleAuthState() {
+      const authSection = document.getElementById('authSection');
+      const user = mockAuth.currentUser;
+      
+      if (user) {
+        authSection.innerHTML = `
+          <span class="text-white text-sm mr-4">${user.username || user.email}</span>
+          <a href="dashboard.html" class="px-3 py-2 rounded-md text-sm font-medium bg-brand-magenta text-white hover:bg-opacity-80 transition-colors">Dashboard</a>
+          <button onclick="logout()" class="px-3 py-2 rounded-md text-sm font-medium border border-brand-magenta text-white hover:bg-brand-magenta transition-colors">Logout</button>
+        `;
+        
+        // Pre-fill form if user is logged in
+        if (user.email) document.getElementById('email').value = user.email;
+        if (user.username) document.getElementById('name').value = user.username;
+      }
+    }
+
+    window.logout = function() {
+      mockAuth.currentUser = null;
+      handleAuthState();
+    };
+
+    // Initialize auth state
+    handleAuthState();
+
+    // Contact form handling
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      
+      try {
+        // Simulate storing message
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Show success message
+        const notification = document.createElement('div');
+        notification.className = 'animate__animated animate__fadeInRight px-6 py-4 rounded-lg shadow-xl bg-green-500 text-white font-medium';
+        notification.textContent = 'Thank you for your message! We will get back to you soon.';
+        document.getElementById('notifications').appendChild(notification);
+        
+        // Hide after 4 seconds
+        setTimeout(() => {
+          notification.classList.remove('animate__fadeInRight');
+          notification.classList.add('animate__fadeOutRight');
+          setTimeout(() => {
+            notification.remove();
+          }, 300);
+        }, 4000);
+        
+        this.reset();
+      } catch (error) {
+        const notification = document.createElement('div');
+        notification.className = 'animate__animated animate__fadeInRight px-6 py-4 rounded-lg shadow-xl bg-red-500 text-white font-medium';
+        notification.textContent = 'Error sending message. Please try again later.';
+        document.getElementById('notifications').appendChild(notification);
+        
+        setTimeout(() => {
+          notification.classList.remove('animate__fadeInRight');
+          notification.classList.add('animate__fadeOutRight');
+          setTimeout(() => {
+            notification.remove();
+          }, 300);
+        }, 4000);
+        
+        console.error("Error storing contact message:", error);
+      }
+    });
+
+    // Add some interactive animations
+    document.addEventListener('DOMContentLoaded', function() {
+      const formInputs = document.querySelectorAll('input, textarea');
+      formInputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.classList.add('animate__animated', 'animate__pulse');
+        });
+        
+        input.addEventListener('blur', function() {
+          this.parentElement.classList.remove('animate__animated', 'animate__pulse');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
