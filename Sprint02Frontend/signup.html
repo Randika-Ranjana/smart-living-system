@@ -26,7 +26,7 @@
 </head>
 <body class="bg-brand-black text-white font-['Inter'] min-h-screen flex flex-col">
   
-    <nav class="bg-brand-dark-purple shadow-lg">
+  <nav class="bg-brand-dark-purple shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
@@ -88,7 +88,7 @@
         
         <div id="message" class="mb-4 p-3 rounded-lg hidden"></div>
         
-        <form class="space-y-4">
+        <form id="signupForm" class="space-y-4">
           <div>
             <input 
               type="text" 
@@ -118,7 +118,8 @@
           </div>
           
           <button 
-            onclick="signup()"
+            type="submit"
+            id="signupBtn"
             class="w-full px-6 py-3 bg-brand-magenta text-white rounded-lg hover:bg-opacity-90 transition-all transform hover:scale-105 font-medium"
           >
             Sign Up
@@ -131,71 +132,143 @@
       </div>
     </div>
   </div>
-  
 
-  
+  <script>
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+  </script>
+
+  <!-- Firebase Configuration -->
   <script type="module">
-  import { auth, db, doc, setDoc } from "./firebase-config.js";
-  import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    // Import Firebase modules and config
+    import { auth, db, doc, setDoc } from "./firebase-config.js";
+    import { createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-    window.signup = async function() {
-    const username = document.getElementById('username').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const messageDiv = document.getElementById('message');
-
-    // Validate inputs
-    if (!username || !email || !password) {
-        showMessage('Please fill in all fields', 'error');
-        return;
+    // Show message function
+    function showMessage(message, type) {
+      const messageDiv = document.getElementById('message');
+      messageDiv.textContent = message;
+      messageDiv.className = `mb-4 p-3 rounded-lg ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white`;
+      messageDiv.classList.remove('hidden');
+      
+      setTimeout(() => {
+        messageDiv.classList.add('hidden');
+      }, 5000);
     }
 
-    try {
+    // Signup function
+    async function signup(event) {
+      event.preventDefault(); // Prevent form submission
+      
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const signupBtn = document.getElementById('signupBtn');
+
+      // Validate inputs
+      if (!username || !email || !password) {
+        showMessage('Please fill in all fields', 'error');
+        return;
+      }
+
+      if (username.length < 3) {
+        showMessage('Username must be at least 3 characters long', 'error');
+        return;
+      }
+
+      if (password.length < 6) {
+        showMessage('Password must be at least 6 characters long', 'error');
+        return;
+      }
+
+      // Set signup in progress flag
+      isSignupInProgress = true;
+
+      // Disable button to prevent multiple submissions
+      signupBtn.disabled = true;
+      signupBtn.textContent = 'Creating Account...';
+
+      try {
         // Create user in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
         
         // Add user data to Firestore
-        await setDoc(doc(db, "users", userCredential.user.uid), {
-        username: username,
-        email: email,
-        createdAt: new Date(),
-        devices: []
+        await setDoc(doc(db, "users", user.uid), {
+          username: username,
+          email: email,
+          createdAt: serverTimestamp(),
+          devices: []
         });
 
         showMessage('Account created successfully! Redirecting...', 'success');
+        
+        // Clear form
+        document.getElementById('signupForm').reset();
+        
         setTimeout(() => {
-        window.location.href = 'dashboard.html';
-        }, 1500);
-    } catch (error) {
-        console.error("Signup error:", error);
-        let errorMessage = "Signup failed";
-        if (error.code === "auth/email-already-in-use") {
-        errorMessage = "Email already in use";
-        } else if (error.code === "auth/weak-password") {
-        errorMessage = "Password should be at least 6 characters";
-        } else if (error.code === "auth/invalid-email") {
-        errorMessage = "Invalid email address";
-        } else if (error.code === "permission-denied") {
-        errorMessage = "Failed to create user profile. Please try again.";
-        }
-        showMessage(errorMessage, 'error');
-        }
-    };
-  function showMessage(message, type) {
-    const messageDiv = document.getElementById('message');
-    messageDiv.textContent = message;
-    messageDiv.className = `mb-4 p-3 rounded-lg ${type === 'success' ? 'bg-green-600' : 'bg-red-600'} text-white`;
-    messageDiv.classList.remove('hidden');
-    
-    setTimeout(() => {
-      messageDiv.classList.add('hidden');
-    }, 5000);
-  }
+          window.location.href = 'dashboard.html';
+        }, 2000);
 
-  // Handle Enter key press
-  document.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') {
-      signup();
+      } catch (error) {
+        console.error("Signup error:", error);
+        let errorMessage = "Signup failed. Please try again.";
+        
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            errorMessage = "This email is already registered. Please use a different email or try logging in.";
+            break;
+          case "auth/weak-password":
+            errorMessage = "Password is too weak. Please use at least 6 characters.";
+            break;
+          case "auth/invalid-email":
+            errorMessage = "Please enter a valid email address.";
+            break;
+          case "auth/operation-not-allowed":
+            errorMessage = "Email/password accounts are not enabled. Please contact support.";
+            break;
+          case "permission-denied":
+            errorMessage = "Failed to create user profile. Please check your internet connection and try again.";
+            break;
+          default:
+            errorMessage = `Signup failed: ${error.message}`;
+        }
+        
+        showMessage(errorMessage, 'error');
+        isSignupInProgress = false; // Reset flag on error
+      } finally {
+        // Re-enable button
+        signupBtn.disabled = false;
+        signupBtn.textContent = 'Sign Up';
+      }
     }
-  });
-</script>
+
+    // Add event listener to form
+    document.getElementById('signupForm').addEventListener('submit', signup);
+
+    // Check if user is already logged in (but only after page loads)
+    let isSignupInProgress = false;
+    
+    onAuthStateChanged(auth, (user) => {
+      if (user && !isSignupInProgress) {
+        // User is already signed in and not in the middle of signup process
+        console.log('User already logged in, redirecting...');
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 100);
+      }
+    });
+
+    // Handle Enter key press on individual inputs
+    document.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter' && event.target.matches('#username, #email, #password')) {
+        event.preventDefault();
+        document.getElementById('signupForm').dispatchEvent(new Event('submit'));
+      }
+    });
+  </script>
+</body>
+</html>

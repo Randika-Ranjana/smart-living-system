@@ -8,11 +8,26 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-purple': '#804e69',
+            'brand-dark-purple': '#3f2739',
+            'brand-magenta': '#895051',
+            'brand-black': '#0c060f'
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-dark text-light font-['Inter'] min-h-screen">
+<body class="bg-brand-black text-white font-['Inter'] min-h-screen">
   <!-- Navigation -->
-    <nav class="bg-brand-dark-purple shadow-lg">
+  <nav class="bg-brand-dark-purple shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
@@ -41,8 +56,9 @@
             <a href="aboutus.html" class="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-brand-magenta transition-colors">About</a>
             <a href="contactus.html" class="px-3 py-2 rounded-md text-sm font-medium text-white hover:bg-brand-magenta transition-colors">Contact</a>
             <div id="authSection" class="flex items-center space-x-2 ml-4">
-              <a href="login.html" class="px-3 py-2 rounded-md text-sm font-medium bg-brand-magenta text-white hover:bg-opacity-80 transition-colors">Login</a>
-              <a href="signup.html" class="px-3 py-2 rounded-md text-sm font-medium border border-brand-magenta text-white hover:bg-brand-magenta transition-colors">Sign Up</a>
+              <span id="usernameNavDisplay" class="text-white text-sm mr-4"></span>
+              <a href="dashboard.html" class="px-3 py-2 rounded-md text-sm font-medium bg-brand-magenta text-white hover:bg-opacity-80 transition-colors">Dashboard</a>
+              <button onclick="logout()" class="px-3 py-2 rounded-md text-sm font-medium border border-brand-magenta text-white hover:bg-brand-magenta transition-colors">Logout</button>
             </div>
           </div>
         </div>
@@ -56,8 +72,9 @@
         <a href="aboutus.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-brand-magenta">About</a>
         <a href="contactus.html" class="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-brand-magenta">Contact</a>
         <div class="pt-4 border-t border-brand-magenta">
-          <a href="login.html" class="block px-3 py-2 rounded-md text-base font-medium bg-brand-magenta text-white">Login</a>
-          <a href="signup.html" class="block px-3 py-2 rounded-md text-base font-medium text-white border border-brand-magenta mt-2">Sign Up</a>
+          <span id="usernameMobileDisplay" class="block px-3 py-2 text-white"></span>
+          <a href="dashboard.html" class="block px-3 py-2 rounded-md text-base font-medium bg-brand-magenta text-white">Dashboard</a>
+          <button onclick="logout()" class="block px-3 py-2 rounded-md text-base font-medium text-white border border-brand-magenta mt-2 w-full text-left">Logout</button>
         </div>
       </div>
     </div>
@@ -65,17 +82,17 @@
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Header -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 animate__animated animate__fadeIn">
       <div>
-        <h1 class="text-3xl font-bold">Dashboard</h1>
-        <p class="text-gray-400">Welcome back! Here's your home temperature overview.</p>
+        <h1 class="text-3xl font-bold text-white">Dashboard</h1>
+        <p class="text-gray-300">Welcome back! Here's your home temperature overview.</p>
       </div>
-      <div id="usernameDisplay" class="mt-4 md:mt-0 text-lg font-medium"></div>
+      <div id="usernameDisplay" class="mt-4 md:mt-0 text-lg font-medium text-white"></div>
     </div>
 
     <!-- Device Connection -->
-    <div class="bg-secondary rounded-xl shadow-lg p-6 mb-8">
-      <h2 class="text-xl font-bold mb-4 flex items-center">
+    <div class="bg-brand-dark-purple rounded-xl shadow-lg p-6 mb-8 animate__animated animate__fadeInUp">
+      <h2 class="text-xl font-bold mb-4 flex items-center text-white">
         <span class="mr-2">🔌</span> Device Connection
       </h2>
       <div class="flex flex-col md:flex-row gap-4">
@@ -83,62 +100,62 @@
           type="text" 
           id="deviceId" 
           placeholder="Enter device ID (e.g. room1)" 
-          class="flex-grow px-4 py-3 rounded-lg bg-dark border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
+          class="flex-grow px-4 py-3 rounded-lg bg-brand-black border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-magenta focus:border-brand-magenta"
         />
         <button 
           id="loadBtn" 
           onclick="loadDeviceData()"
-          class="px-6 py-3 bg-primary text-light rounded-lg hover:bg-opacity-90 transition-colors flex items-center justify-center"
+          class="px-6 py-3 bg-brand-magenta text-white rounded-lg hover:bg-opacity-80 transition-all transform hover:scale-105 flex items-center justify-center"
         >
           <span class="btn-text">Connect</span>
           <div class="btn-loader hidden ml-2">
-            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-light"></div>
+            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
           </div>
         </button>
       </div>
     </div>
 
     <!-- Status Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <div class="bg-secondary rounded-xl shadow-lg p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 animate__animated animate__fadeInUp">
+      <div class="bg-brand-dark-purple rounded-xl shadow-lg p-8 transform transition-all hover:scale-105 hover:bg-brand-purple">
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-2xl mb-1">🌡️</div>
-            <h3 class="text-lg font-medium text-gray-400">Temperature</h3>
+            <div class="text-4xl mb-4">🌡️</div>
+            <h3 class="text-xl font-bold text-white mb-2">Temperature</h3>
             <div class="flex items-end mt-2">
-              <span id="temperature" class="text-4xl font-bold">--</span>
-              <span class="text-xl ml-1">°C</span>
+              <span id="temperature" class="text-4xl font-bold text-white">--</span>
+              <span class="text-xl ml-1 text-gray-300">°C</span>
             </div>
           </div>
-          <div id="tempTrend" class="text-sm px-3 py-1 rounded-full bg-opacity-20"></div>
+          <div id="tempTrend" class="text-sm px-3 py-1 rounded-full bg-brand-magenta bg-opacity-20 text-white"></div>
         </div>
       </div>
-      <div class="bg-secondary rounded-xl shadow-lg p-6">
+      <div class="bg-brand-dark-purple rounded-xl shadow-lg p-8 transform transition-all hover:scale-105 hover:bg-brand-purple">
         <div class="flex items-center justify-between">
           <div>
-            <div class="text-2xl mb-1">💧</div>
-            <h3 class="text-lg font-medium text-gray-400">Humidity</h3>
+            <div class="text-4xl mb-4">💧</div>
+            <h3 class="text-xl font-bold text-white mb-2">Humidity</h3>
             <div class="flex items-end mt-2">
-              <span id="humidity" class="text-4xl font-bold">--</span>
-              <span class="text-xl ml-1">%</span>
+              <span id="humidity" class="text-4xl font-bold text-white">--</span>
+              <span class="text-xl ml-1 text-gray-300">%</span>
             </div>
           </div>
-          <div id="humidityTrend" class="text-sm px-3 py-1 rounded-full bg-opacity-20"></div>
+          <div id="humidityTrend" class="text-sm px-3 py-1 rounded-full bg-brand-magenta bg-opacity-20 text-white"></div>
         </div>
       </div>
     </div>
 
     <!-- Temperature Control -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-      <div class="bg-secondary rounded-xl shadow-lg p-6">
-        <h2 class="text-xl font-bold mb-6 flex items-center">
+      <div class="bg-brand-dark-purple rounded-xl shadow-lg p-6 transform transition-all hover:bg-brand-purple">
+        <h2 class="text-xl font-bold mb-6 flex items-center text-white">
           <span class="mr-2">🎯</span> Temperature Control
         </h2>
         
         <div class="flex flex-col items-center">
           <!-- Circular Slider -->
-          <div class="relative w-64 h-64 mb-8">
-            <svg class="absolute" width="256" height="256" viewBox="0 0 256 256">
+          <div class="circular-slider relative w-64 h-64 mb-8">
+            <svg class="absolute slider-svg" width="256" height="256" viewBox="0 0 256 256">
               <defs>
                 <linearGradient id="tempGradient">
                   <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
@@ -147,31 +164,30 @@
                 </linearGradient>
               </defs>
               <circle 
-                class="stroke-gray-700" 
+                class="stroke-gray-600" 
                 cx="128" cy="128" r="120" 
                 fill="none" 
                 stroke-width="16"
               />
               <circle 
-                class="stroke-primary" 
+                id="progressCircle"
+                class="stroke-brand-magenta" 
                 cx="128" cy="128" r="120" 
                 fill="none" 
                 stroke-width="16"
                 stroke-dasharray="754"
                 stroke-dashoffset="754"
-                id="progressCircle"
                 stroke-linecap="round"
                 transform="rotate(-90 128 128)"
               />
             </svg>
             <div class="absolute inset-0 flex flex-col items-center justify-center">
-              <div class="text-5xl font-bold" id="desiredTempDisplay">20</div>
-              <div class="text-gray-400">Target Temperature</div>
+              <div class="text-5xl font-bold text-white" id="desiredTempDisplay">20</div>
+              <div class="text-gray-300">Target Temperature</div>
             </div>
             <div 
-              class="absolute w-8 h-8 bg-primary rounded-full cursor-pointer -translate-x-1/2 -translate-y-1/2"
+              class="absolute w-8 h-8 bg-brand-magenta rounded-full cursor-pointer -translate-x-1/2 -translate-y-1/2 transform transition-all hover:scale-110 z-10"
               id="sliderHandle"
-              style="left: 128px; top: 8px;"
             ></div>
           </div>
           
@@ -179,7 +195,7 @@
           <div class="flex items-center gap-4 mb-6">
             <button 
               onclick="adjustTemp(-0.5)"
-              class="w-12 h-12 rounded-full bg-dark flex items-center justify-center text-2xl hover:bg-primary transition-colors"
+              class="w-12 h-12 rounded-full bg-brand-black flex items-center justify-center text-2xl text-white hover:bg-brand-magenta transition-all transform hover:scale-105"
             >
               -
             </button>
@@ -190,11 +206,12 @@
               min="5" 
               max="35" 
               value="20"
-              class="w-24 px-4 py-3 text-center rounded-lg bg-dark border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
+              onchange="updateTempFromInput()"
+              class="w-24 px-4 py-3 text-center rounded-lg bg-brand-black border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-brand-magenta focus:border-brand-magenta"
             />
             <button 
               onclick="adjustTemp(0.5)"
-              class="w-12 h-12 rounded-full bg-dark flex items-center justify-center text-2xl hover:bg-primary transition-colors"
+              class="w-12 h-12 rounded-full bg-brand-black flex items-center justify-center text-2xl text-white hover:bg-brand-magenta transition-all transform hover:scale-105"
             >
               +
             </button>
@@ -202,7 +219,7 @@
           
           <button 
             onclick="updateDesiredTemp()"
-            class="px-6 py-3 bg-primary text-light rounded-lg hover:bg-opacity-90 transition-colors w-full"
+            class="px-6 py-3 bg-brand-magenta text-white rounded-lg hover:bg-opacity-80 transition-all transform hover:scale-105 w-full"
           >
             Update Temperature
           </button>
@@ -210,84 +227,112 @@
       </div>
       
       <!-- Quick Actions -->
-      <div class="bg-secondary rounded-xl shadow-lg p-6">
-        <h2 class="text-xl font-bold mb-6 flex items-center">
+      <div class="bg-brand-dark-purple rounded-xl shadow-lg p-6 transform transition-all hover:bg-brand-purple">
+        <h2 class="text-xl font-bold mb-6 flex items-center text-white">
           <span class="mr-2">⚡</span> Quick Actions
         </h2>
         
         <div class="grid grid-cols-1 gap-4">
           <button 
             onclick="setEcoMode()"
-            class="flex items-center justify-between p-4 rounded-lg bg-dark hover:bg-primary transition-colors"
+            class="flex items-center justify-between p-4 rounded-lg bg-brand-black hover:bg-brand-magenta transition-all transform hover:scale-105"
           >
             <div class="flex items-center">
               <span class="text-2xl mr-3">🌱</span>
               <div>
-                <div class="font-medium">Eco Mode</div>
-                <div class="text-sm text-gray-400">Energy saving (18°C)</div>
+                <div class="font-medium text-white">Eco Mode</div>
+                <div class="text-sm text-gray-300">Energy saving (18°C)</div>
               </div>
             </div>
-            <span class="text-gray-400">→</span>
+            <span class="text-gray-300">→</span>
           </button>
           
           <button 
             onclick="setComfortMode()"
-            class="flex items-center justify-between p-4 rounded-lg bg-dark hover:bg-primary transition-colors"
+            class="flex items-center justify-between p-4 rounded-lg bg-brand-black hover:bg-brand-magenta transition-all transform hover:scale-105"
           >
             <div class="flex items-center">
               <span class="text-2xl mr-3">🏠</span>
               <div>
-                <div class="font-medium">Comfort Mode</div>
-                <div class="text-sm text-gray-400">Optimal comfort (22°C)</div>
+                <div class="font-medium text-white">Comfort Mode</div>
+                <div class="text-sm text-gray-300">Optimal comfort (22°C)</div>
               </div>
             </div>
-            <span class="text-gray-400">→</span>
+            <span class="text-gray-300">→</span>
           </button>
           
           <button 
             onclick="setAwayMode()"
-            class="flex items-center justify-between p-4 rounded-lg bg-dark hover:bg-primary transition-colors"
+            class="flex items-center justify-between p-4 rounded-lg bg-brand-black hover:bg-brand-magenta transition-all transform hover:scale-105"
           >
             <div class="flex items-center">
               <span class="text-2xl mr-3">✈️</span>
               <div>
-                <div class="font-medium">Away Mode</div>
-                <div class="text-sm text-gray-400">Energy efficient (16°C)</div>
+                <div class="font-medium text-white">Away Mode</div>
+                <div class="text-sm text-gray-300">Energy efficient (16°C)</div>
               </div>
             </div>
-            <span class="text-gray-400">→</span>
+            <span class="text-gray-300">→</span>
           </button>
         </div>
       </div>
     </div>
     
     <!-- History Chart -->
-    <div class="bg-secondary rounded-xl shadow-lg p-6 mb-8">
+    <div class="bg-brand-dark-purple rounded-xl shadow-lg p-6 mb-8 transform transition-all hover:bg-brand-purple">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-        <h2 class="text-xl font-bold flex items-center">
+        <h2 class="text-xl font-bold flex items-center text-white">
           <span class="mr-2">📊</span> Temperature History
         </h2>
-        <select 
-          id="historyPeriod" 
-          onchange="loadChart()"
-          class="mt-2 md:mt-0 px-4 py-2 rounded-lg bg-dark border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary"
-        >
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
-        </select>
+        <div class="flex gap-2 mt-2 md:mt-0">
+          <select 
+            id="historyPeriod" 
+            onchange="loadChart()"
+            class="px-4 py-2 rounded-lg bg-brand-black border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-brand-magenta focus:border-brand-magenta"
+          >
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+          <button onclick="generateNewData()" class="px-4 py-2 bg-brand-magenta text-white rounded-lg hover:bg-opacity-80 transition-all">
+            Refresh Data
+          </button>
+        </div>
       </div>
       
       <div class="relative h-80">
         <canvas id="historyChart"></canvas>
         <div 
           id="chartLoading" 
-          class="absolute inset-0 flex items-center justify-center bg-secondary bg-opacity-80 hidden"
+          class="absolute inset-0 flex items-center justify-center bg-brand-dark-purple bg-opacity-80 hidden"
         >
           <div class="text-center">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p>Loading chart data...</p>
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-magenta mx-auto mb-4"></div>
+            <p class="text-white">Loading chart data...</p>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-time Analytics -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      <!-- Humidity Chart -->
+      <div class="bg-brand-dark-purple rounded-xl shadow-lg p-6 transform transition-all hover:bg-brand-purple">
+        <h2 class="text-xl font-bold mb-6 flex items-center text-white">
+          <span class="mr-2">💧</span> Humidity Levels
+        </h2>
+        <div class="relative h-64">
+          <canvas id="humidityChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Energy Usage -->
+      <div class="bg-brand-dark-purple rounded-xl shadow-lg p-6 transform transition-all hover:bg-brand-purple">
+        <h2 class="text-xl font-bold mb-6 flex items-center text-white">
+          <span class="mr-2">⚡</span> Energy Usage
+        </h2>
+        <div class="relative h-64">
+          <canvas id="energyChart"></canvas>
         </div>
       </div>
     </div>
@@ -296,8 +341,671 @@
   <!-- Notification System -->
   <div id="notifications" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
 
+  <script>
+    const API_BASE = 'http://56.228.70.167:4000'; // Your EC2 public IP
+    let currentDeviceId = '';
+    let temperatureChart = null;
+    let humidityChart = null;
+    let energyChart = null;
+    let isDragging = false;
+    let currentTemp = 20;
+    let previousTemp = null;
+    let previousHumidity = null;
+
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
+    }
+
+    // Notification system
+    function showNotification(message, type = 'info') {
+      const notifications = document.getElementById('notifications');
+      const notification = document.createElement('div');
+      
+      const bgColor = type === 'success' ? 'bg-green-600' : 
+                     type === 'error' ? 'bg-red-600' : 'bg-brand-magenta';
+      
+      notification.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg transform transition-all animate__animated animate__slideInRight`;
+      notification.textContent = message;
+      
+      notifications.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add('animate__slideOutRight');
+        setTimeout(() => {
+          notification.remove();
+        }, 300);
+      }, 4000);
+    }
+
+    // Loading states
+    function setLoadingState(elementId, isLoading) {
+      const element = document.getElementById(elementId);
+      if (isLoading) {
+        element.classList.add('loading');
+        element.disabled = true;
+      } else {
+        element.classList.remove('loading');
+        element.disabled = false;
+      }
+    }
+
+    // Load device data
+    async function loadDeviceData() {
+      currentDeviceId = document.getElementById('deviceId').value.trim();
+      if (!currentDeviceId) {
+        showNotification("Please enter a device ID", 'error');
+        return;
+      }
+
+      const btn = document.getElementById('loadBtn');
+      const btnText = btn.querySelector('.btn-text');
+      const btnLoader = btn.querySelector('.btn-loader');
+      
+      btnText.textContent = 'Connecting...';
+      btnLoader.classList.remove('hidden');
+      
+      try {
+        // Load device data
+        const response = await fetch(`${API_BASE}/api/devices/data?deviceId=${currentDeviceId}`);
+        if (!response.ok) throw new Error('Device data fetch failed');
+        
+        const data = await response.json();
+        
+        // Update sensor display
+        if (data.sensorData) {
+          updateSensorDisplay(data.sensorData);
+        }
+        
+        // Update desired temperature
+        if (data.controlSettings) {
+          updateDesiredTempDisplay(parseFloat(data.controlSettings.desiredTemp));
+        }
+        
+        // Load chart
+        await loadChart();
+        
+        showNotification(`Connected to device: ${currentDeviceId}`, 'success');
+        
+      } catch (error) {
+        console.error('Error loading device data:', error);
+        showNotification('Failed to load device data', 'error');
+      } finally {
+        btnText.textContent = 'Connected';
+        btnLoader.classList.add('hidden');
+      }
+    }
+
+    // Update sensor display with animations and trends
+    function updateSensorDisplay(data) {
+      const tempElement = document.getElementById('temperature');
+      const humidityElement = document.getElementById('humidity');
+      const tempTrendElement = document.getElementById('tempTrend');
+      const humidityTrendElement = document.getElementById('humidityTrend');
+      
+      const newTemp = data.temperature ? parseFloat(data.temperature.toFixed(1)) : null;
+      const newHumidity = data.humidity ? parseFloat(data.humidity.toFixed(1)) : null;
+      
+      // Animate temperature change
+      if (newTemp !== null) {
+        animateValue(tempElement, tempElement.textContent === '--' ? newTemp : parseFloat(tempElement.textContent), newTemp);
+        
+        // Show trend
+        if (previousTemp !== null) {
+          const tempDiff = newTemp - previousTemp;
+          if (Math.abs(tempDiff) > 0.1) {
+            tempTrendElement.textContent = tempDiff > 0 ? `↗ +${tempDiff.toFixed(1)}°` : `↘ ${tempDiff.toFixed(1)}°`;
+            tempTrendElement.className = 'text-sm px-3 py-1 rounded-full ' + 
+              (tempDiff > 0 ? 'bg-red-500 bg-opacity-20 text-red-300' : 'bg-blue-500 bg-opacity-20 text-blue-300');
+          } else {
+            tempTrendElement.textContent = '→ Stable';
+            tempTrendElement.className = 'text-sm px-3 py-1 rounded-full bg-green-500 bg-opacity-20 text-green-300';
+          }
+        }
+        previousTemp = newTemp;
+      } else {
+        tempElement.textContent = '--';
+      }
+      
+      // Animate humidity change
+      if (newHumidity !== null) {
+        animateValue(humidityElement, humidityElement.textContent === '--' ? newHumidity : parseFloat(humidityElement.textContent), newHumidity);
+        
+        // Show trend
+        if (previousHumidity !== null) {
+          const humidityDiff = newHumidity - previousHumidity;
+          if (Math.abs(humidityDiff) > 1) {
+            humidityTrendElement.textContent = humidityDiff > 0 ? `↗ +${humidityDiff.toFixed(1)}%` : `↘ ${humidityDiff.toFixed(1)}%`;
+            humidityTrendElement.className = 'text-sm px-3 py-1 rounded-full ' + 
+              (humidityDiff > 0 ? 'bg-blue-500 bg-opacity-20 text-blue-300' : 'bg-orange-500 bg-opacity-20 text-orange-300');
+          } else {
+            humidityTrendElement.textContent = '→ Stable';
+            humidityTrendElement.className = 'text-sm px-3 py-1 rounded-full bg-green-500 bg-opacity-20 text-green-300';
+          }
+        }
+        previousHumidity = newHumidity;
+      } else {
+        humidityElement.textContent = '--';
+      }
+    }
+
+    // Animate number changes
+    function animateValue(element, start, end, duration = 1000) {
+      const startTime = performance.now();
+      const difference = end - start;
+      
+      function updateValue(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = start + (difference * easeOut);
+        
+        element.textContent = current.toFixed(1);
+        
+        if (progress < 1) {
+          requestAnimationFrame(updateValue);
+        }
+      }
+      
+      requestAnimationFrame(updateValue);
+    }
+
+    // Update desired temperature display
+    function updateDesiredTempDisplay(temp) {
+      currentTemp = temp;
+      document.getElementById('desiredTemp').value = temp;
+      document.getElementById('desiredTempDisplay').textContent = temp.toFixed(1);
+      updateSliderProgress();
+      updateHandlePosition();
+    }
+
+    // Update desired temperature
+    async function updateDesiredTemp() {
+      const desiredTemp = parseFloat(document.getElementById('desiredTemp').value);
+      if (isNaN(desiredTemp) || desiredTemp < 5 || desiredTemp > 35) {
+        showNotification("Enter a valid temperature between 5°C and 35°C", 'error');
+        return;
+      }
+
+      if (!currentDeviceId) {
+        showNotification("Please connect to a device first", 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/devices/control`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            deviceId: currentDeviceId, 
+            desiredTemp,
+            mode: 'auto',
+            power: 'on'
+          })
+        });
+        
+        if (!response.ok) throw new Error('Update failed');
+        
+        const result = await response.json();
+        if (result.success) {
+          showNotification(`Temperature set to ${desiredTemp}°C`, 'success');
+          currentTemp = desiredTemp;
+          updateDesiredTempDisplay(desiredTemp);
+        } else {
+          throw new Error('Update failed');
+        }
+        
+      } catch (error) {
+        console.error('Error updating temperature:', error);
+        showNotification('Failed to update temperature', 'error');
+      }
+    }
+
+    // Initialize circular slider
+    function initializeCircularSlider() {
+      const slider = document.querySelector('.circular-slider');
+      const handle = document.getElementById('sliderHandle');
+      
+      slider.addEventListener('mousedown', startDrag);
+      slider.addEventListener('touchstart', startDrag, { passive: false });
+      document.addEventListener('mousemove', drag);
+      document.addEventListener('touchmove', drag, { passive: false });
+      document.addEventListener('mouseup', endDrag);
+      document.addEventListener('touchend', endDrag);
+      
+      updateHandlePosition();
+    }
+
+    function startDrag(e) {
+      e.preventDefault();
+      isDragging = true;
+      updateTempFromPosition(e);
+    }
+
+    function drag(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      updateTempFromPosition(e);
+    }
+
+    function endDrag() {
+      isDragging = false;
+    }
+
+    function updateTempFromPosition(e) {
+      const slider = document.querySelector('.circular-slider');
+      const rect = slider.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      let clientX, clientY;
+      if (e.type.includes('touch')) {
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        clientX = e.clientX;
+        clientY = e.clientY;
+      }
+      
+      const angle = Math.atan2(clientY - centerY, clientX - centerX);
+      let normalizedAngle = angle + Math.PI / 2;
+      if (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
+      
+      // Convert angle to temperature (5°C to 35°C range)
+      const tempRange = 30; // 35 - 5
+      const temp = 5 + (normalizedAngle / (2 * Math.PI)) * tempRange;
+      const clampedTemp = Math.max(5, Math.min(35, temp));
+      
+      currentTemp = Math.round(clampedTemp * 2) / 2; // Round to nearest 0.5
+      updateDesiredTempDisplay(currentTemp);
+    }
+
+    function updateHandlePosition() {
+      const handle = document.getElementById('sliderHandle');
+      const tempRange = 30; // 35 - 5
+      const normalizedTemp = (currentTemp - 5) / tempRange;
+      const angle = normalizedTemp * 2 * Math.PI - Math.PI / 2;
+      
+      const radius = 120;
+      const x = 140 + radius * Math.cos(angle) - 12; // -12 to center the handle
+      const y = 140 + radius * Math.sin(angle) - 12;
+      
+      handle.style.left = `${x}px`;
+      handle.style.top = `${y}px`;
+    }
+
+    function updateSliderProgress() {
+      const progressCircle = document.getElementById('progressCircle');
+      const tempRange = 30; // 35 - 5
+      const normalizedTemp = (currentTemp - 5) / tempRange;
+      const circumference = 2 * Math.PI * 120; // 120 is the radius
+      const offset = circumference - (normalizedTemp * circumference);
+      
+      progressCircle.style.strokeDashoffset = offset;
+    }
+
+    // Temperature adjustment functions
+    function adjustTemp(delta) {
+      const newTemp = Math.max(5, Math.min(35, currentTemp + delta));
+      currentTemp = newTemp;
+      updateDesiredTempDisplay(currentTemp);
+    }
+
+    function updateTempFromInput() {
+      const temp = parseFloat(document.getElementById('desiredTemp').value);
+      if (!isNaN(temp) && temp >= 5 && temp <= 35) {
+        currentTemp = temp;
+        document.getElementById('desiredTempDisplay').textContent = temp.toFixed(1);
+        updateSliderProgress();
+        updateHandlePosition();
+      }
+    }
+
+    // Chart loading with enhanced UX
+    async function loadChart() {
+      if (!currentDeviceId) return;
+      
+      const chartLoading = document.getElementById('chartLoading');
+      const chartCanvas = document.getElementById('historyChart');
+      const period = document.getElementById('historyPeriod').value;
+      
+      chartLoading.classList.remove('hidden');
+      chartCanvas.style.opacity = '0.5';
+      
+      try {
+        const response = await fetch(`${API_BASE}/api/devices/history?deviceId=${currentDeviceId}&period=${period}`);
+        if (!response.ok) throw new Error('Chart data fetch failed');
+        
+        const data = await response.json();
+        renderChart(data, period);
+        
+      } catch (error) {
+        console.error('Error loading chart:', error);
+        showNotification('Failed to load chart data', 'error');
+      } finally {
+        chartLoading.classList.add('hidden');
+        chartCanvas.style.opacity = '1';
+      }
+    }
+
+    function renderChart(data, period) {
+      const ctx = document.getElementById('historyChart').getContext('2d');
+      
+      if (temperatureChart) {
+        temperatureChart.destroy();
+      }
+      
+      const labels = data.map(entry => entry.label);
+      const temps = data.map(entry => parseFloat(entry.temperature));
+      const hums = data.map(entry => parseFloat(entry.humidity));
+      
+      temperatureChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'Temperature (°C)',
+              data: temps,
+              borderColor: '#ef4444',
+              backgroundColor: 'rgba(239, 68, 68, 0.1)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 4,
+              pointHoverRadius: 8,
+              pointBackgroundColor: '#ef4444',
+              pointBorderColor: '#ffffff',
+              pointBorderWidth: 2
+            },
+            {
+              label: 'Humidity (%)',
+              data: hums,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              fill: true,
+              tension: 0.4,
+              pointRadius: 4,
+              pointHoverRadius: 8,
+              pointBackgroundColor: '#3b82f6',
+              pointBorderColor: '#ffffff',
+              pointBorderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'top',
+              labels: {
+                color: 'rgba(255, 255, 255, 0.8)',
+                font: {
+                  size: 14,
+                  weight: 500
+                },
+                usePointStyle: true,
+                pointStyle: 'circle'
+              }
+            },
+            title: {
+              display: true,
+              text: `Sensor History (${period.charAt(0).toUpperCase() + period.slice(1)})`,
+              color: 'rgba(255, 255, 255, 0.9)',
+              font: {
+                size: 16,
+                weight: 600
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              borderColor: 'rgba(255, 255, 255, 0.2)',
+              borderWidth: 1,
+              titleColor: 'white',
+              bodyColor: 'white',
+              cornerRadius: 8,
+              displayColors: true
+            }
+          },
+          scales: {
+            x: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)',
+                drawBorder: false
+              },
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.8)',
+                font: {
+                  size: 12
+                }
+              }
+            },
+            y: {
+              grid: {
+                color: 'rgba(255, 255, 255, 0.1)',
+                drawBorder: false
+              },
+              ticks: {
+                color: 'rgba(255, 255, 255, 0.8)',
+                font: {
+                  size: 12
+                }
+              }
+            }
+          },
+          interaction: {
+            intersect: false,
+            mode: 'index'
+          },
+          animation: {
+            duration: 1000,
+            easing: 'easeOutQuart'
+          }
+        }
+      });
+    }
+
+    // Quick mode functions
+    function setEcoMode() {
+      updateSystemMode(18, 'Eco mode activated - Temperature set to 18°C');
+    }
+
+    function setComfortMode() {
+      updateSystemMode(22, 'Comfort mode activated - Temperature set to 22°C');
+    }
+
+    function setAwayMode() {
+      updateSystemMode(16, 'Away mode activated - Temperature set to 16°C');
+    }
+
+    async function updateSystemMode(temp, message) {
+      if (!currentDeviceId) {
+        showNotification("Please connect to a device first", 'error');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/devices/control`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            deviceId: currentDeviceId, 
+            desiredTemp: temp,
+            mode: 'auto',
+            power: 'on'
+          })
+        });
+        
+        if (!response.ok) throw new Error('Update failed');
+        
+        const result = await response.json();
+        if (result.success) {
+          showNotification(message, 'success');
+          currentTemp = temp;
+          updateDesiredTempDisplay(temp);
+        } else {
+          throw new Error('Update failed');
+        }
+        
+      } catch (error) {
+        console.error('Error updating mode:', error);
+        showNotification('Failed to update mode', 'error');
+      }
+    }
+
+    // Initialize humidity and energy charts
+    function initializeSecondaryCharts() {
+      const ctxHumidity = document.getElementById('humidityChart').getContext('2d');
+      const ctxEnergy = document.getElementById('energyChart').getContext('2d');
+      
+      // Humidity chart
+      humidityChart = new Chart(ctxHumidity, {
+        type: 'bar',
+        data: {
+          labels: Array.from({length: 12}, (_, i) => `${i*2}:00`),
+          datasets: [{
+            label: 'Humidity (%)',
+            data: Array.from({length: 12}, () => Math.floor(Math.random() * 30) + 30),
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderColor: '#3b82f6',
+            borderWidth: 2,
+            borderRadius: 8,
+            borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: '#ffffff' }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff'
+            }
+          },
+          scales: {
+            x: {
+              ticks: { color: '#ffffff' },
+              grid: { color: 'rgba(255, 255, 255, 0.1)' }
+            },
+            y: {
+              ticks: { color: '#ffffff' },
+              grid: { color: 'rgba(255, 255, 255, 0.1)' }
+            }
+          }
+        }
+      });
+
+      // Energy usage chart
+      energyChart = new Chart(ctxEnergy, {
+        type: 'doughnut',
+        data: {
+          labels: ['Heating', 'Cooling', 'Fans', 'Sensors', 'Other'],
+          datasets: [{
+            data: Array.from({length: 5}, () => Math.floor(Math.random() * 100) + 20),
+            backgroundColor: [
+              '#ef4444',
+              '#3b82f6',
+              '#10b981',
+              '#f59e0b',
+              '#8b5cf6'
+            ],
+            borderWidth: 3,
+            borderColor: '#0c060f'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { 
+                color: '#ffffff',
+                padding: 20
+              }
+            },
+            tooltip: {
+              backgroundColor: 'rgba(15, 23, 42, 0.9)',
+              titleColor: '#ffffff',
+              bodyColor: '#ffffff'
+            }
+          }
+        }
+      });
+    }
+
+    // Generate new data for all charts
+    function generateNewData() {
+      const period = document.getElementById('historyPeriod').value;
+      loadChart();
+      
+      // Update humidity chart with random data
+      if (humidityChart) {
+        humidityChart.data.datasets[0].data = Array.from({length: 12}, () => Math.floor(Math.random() * 30) + 30);
+        humidityChart.update();
+      }
+      
+      // Update energy chart with random data
+      if (energyChart) {
+        energyChart.data.datasets[0].data = Array.from({length: 5}, () => Math.floor(Math.random() * 100) + 20);
+        energyChart.update();
+      }
+      
+      showNotification('All charts refreshed!', 'success');
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Enter key support for device ID input
+      document.getElementById('deviceId').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          loadDeviceData();
+        }
+      });
+      
+      // Enter key support for desired temp input
+      document.getElementById('desiredTemp').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          updateDesiredTemp();
+        }
+      });
+      
+      // Auto-refresh data every 30 seconds if device is connected
+      setInterval(() => {
+        if (currentDeviceId) {
+          loadDeviceData();
+        }
+      }, 30000);
+    }
+
+    // Initialize everything when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeCircularSlider();
+      initializeSecondaryCharts();
+      setupEventListeners();
+      
+      // Add some initial animation
+      setTimeout(() => {
+        showNotification('🏠 Welcome to Smart Living Dashboard!', 'info');
+      }, 1000);
+    });
+
+    // Handle window resize for charts
+    window.addEventListener('resize', function() {
+      if (temperatureChart) temperatureChart.resize();
+      if (humidityChart) humidityChart.resize();
+      if (energyChart) energyChart.resize();
+    });
+  </script>
+
   <script type="module">
-    import { auth } from "firebase-config.js";
+    import { auth } from "./firebase-config.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
@@ -311,26 +1019,91 @@
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const username = userDoc.exists() ? userDoc.data().username || user.email : user.email;
         
-        // Update display
+        // Update username displays
         document.getElementById('usernameDisplay').textContent = `Hello, ${username}`;
-        
-        // Update auth section in nav
-        const authSection = document.getElementById('authSection');
-        authSection.innerHTML = `
-          <span class="text-light text-sm">${user.email}</span>
-          <button onclick="logout()" class="px-3 py-2 rounded-md text-sm font-medium border border-primary text-light hover:bg-primary transition-colors">Logout</button>
-        `;
+        document.getElementById('usernameNavDisplay').textContent = username;
+        document.getElementById('usernameMobileDisplay').textContent = username;
       }
     });
 
     // Make logout function available
     window.logout = function() {
-      import('auth.js').then(module => {
+      import('./auth.js').then(module => {
         module.logout();
       });
     };
   </script>
 
-  <script src="app.js"></script>
+  <style>
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    .animate-pulse-subtle {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    /* Smooth transitions for all interactive elements */
+    * {
+      transition: transform 0.2s ease-in-out;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #0c060f;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #895051;
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #804e69;
+    }
+    
+    /* Circular slider styles */
+    .circular-slider {
+      position: relative;
+      width: 256px;
+      height: 256px;
+      margin: 0 auto;
+    }
+    
+    /* Loading state */
+    .loading {
+      position: relative;
+      opacity: 0.7;
+    }
+    
+    .loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Notification animations */
+    @keyframes slideInRight {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+  </style>
 </body>
 </html>

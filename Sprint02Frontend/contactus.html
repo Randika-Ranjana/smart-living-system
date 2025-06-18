@@ -26,7 +26,7 @@
 </head>
 <body class="bg-brand-black text-white font-['Inter'] min-h-screen flex flex-col">
   <!-- Navigation -->
-  <nav class="bg-brand-dark shadow-lg">
+  <nav class="bg-brand-dark-purple shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
@@ -171,6 +171,7 @@
             
             <button 
               type="submit"
+              id="submitBtn"
               class="w-full px-8 py-4 bg-brand-magenta text-white rounded-lg hover:bg-opacity-80 transition-all transform hover:scale-105 font-medium text-lg"
             >
               Send Message
@@ -223,84 +224,147 @@
   <div id="notifications" class="fixed bottom-4 right-4 space-y-2 z-50"></div>
 
   <script type="module">
-    // Mock Firebase config for demo purposes
-    const mockAuth = {
-      currentUser: null
+    // Import Firebase modules and configuration
+    import { auth, db, doc, setDoc, serverTimestamp } from './firebase-config.js';
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { collection, getDoc, getFirestore } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    // Mobile menu toggle function
+    window.toggleMobileMenu = function() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.classList.toggle('hidden');
     };
 
-    // Mock auth state handling
-    function handleAuthState() {
+    // Auth state handling - Updated to fetch username from Firestore
+    async function handleAuthState(user) {
       const authSection = document.getElementById('authSection');
-      const user = mockAuth.currentUser;
       
       if (user) {
-        authSection.innerHTML = `
-          <span class="text-white text-sm mr-4">${user.username || user.email}</span>
-          <a href="dashboard.html" class="px-3 py-2 rounded-md text-sm font-medium bg-brand-magenta text-white hover:bg-opacity-80 transition-colors">Dashboard</a>
-          <button onclick="logout()" class="px-3 py-2 rounded-md text-sm font-medium border border-brand-magenta text-white hover:bg-brand-magenta transition-colors">Logout</button>
-        `;
-        
-        // Pre-fill form if user is logged in
-        if (user.email) document.getElementById('email').value = user.email;
-        if (user.username) document.getElementById('name').value = user.username;
+        const db = getFirestore();
+        try {
+          const userDoc = await getDoc(doc(db, "users", user.uid));
+          let displayName = user.email; // fallback to email
+          
+          if (userDoc.exists()) {
+            displayName = userDoc.data().username || user.email;
+          }
+          
+          authSection.innerHTML = `
+            <span class="text-white text-sm mr-4">${displayName}</span>
+            <a href="dashboard.html" class="px-3 py-2 rounded-md text-sm font-medium bg-brand-magenta text-white hover:bg-opacity-80 transition-colors">Dashboard</a>
+            <button onclick="logout()" class="px-3 py-2 rounded-md text-sm font-medium border border-brand-magenta text-white hover:bg-brand-magenta transition-colors">Logout</button>
+          `;
+          
+          // Pre-fill form if user is logged in
+          if (user.email) document.getElementById('email').value = user.email;
+          if (userDoc.exists() && userDoc.data().username) {
+            document.getElementById('name').value = userDoc.data().username;
+          } else if (user.displayName) {
+            document.getElementById('name').value = user.displayName;
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          // Fallback to basic display
+          authSection.innerHTML = `
+            <span class="text-white text-sm mr-4">${user.email}</span>
+            <a href="dashboard.html" class="px-3 py-2 rounded-md text-sm font-medium bg-brand-magenta text-white hover:bg-opacity-80 transition-colors">Dashboard</a>
+            <button onclick="logout()" class="px-3 py-2 rounded-md text-sm font-medium border border-brand-magenta text-white hover:bg-brand-magenta transition-colors">Logout</button>
+          `;
+        }
       }
     }
 
-    window.logout = function() {
-      mockAuth.currentUser = null;
-      handleAuthState();
+    // Logout function
+    window.logout = async function() {
+      try {
+        await auth.signOut();
+        location.reload(); // Refresh page to reset UI
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
     };
 
-    // Initialize auth state
-    handleAuthState();
+    // Listen for auth state changes
+    onAuthStateChanged(auth, (user) => {
+      handleAuthState(user);
+    });
+
+    // Show notification function
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+      notification.className = `animate__animated animate__fadeInRight px-6 py-4 rounded-lg shadow-xl ${bgColor} text-white font-medium`;
+      notification.textContent = message;
+      document.getElementById('notifications').appendChild(notification);
+      
+      // Hide after 4 seconds
+      setTimeout(() => {
+        notification.classList.remove('animate__fadeInRight');
+        notification.classList.add('animate__fadeOutRight');
+        setTimeout(() => {
+          notification.remove();
+        }, 300);
+      }, 4000);
+    }
 
     // Contact form handling
     document.getElementById('contactForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      const name = document.getElementById('name').value;
-      const email = document.getElementById('email').value;
-      const message = document.getElementById('message').value;
+      const submitBtn = document.getElementById('submitBtn');
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      // Validation
+      if (!name || !email || !message) {
+        showNotification('Please fill in all fields.', 'error');
+        return;
+      }
+
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showNotification('Please enter a valid email address.', 'error');
+        return;
+      }
+      
+      // Disable submit button and show loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
       
       try {
-        // Simulate storing message
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Generate unique ID for the message
+        const messageRef = doc(collection(db, 'contactus'));
+        
+        // Store message in Firestore
+        await setDoc(messageRef, {
+          name: name,
+          email: email,
+          message: message,
+          timestamp: serverTimestamp(),
+          status: 'new'
+        });
         
         // Show success message
-        const notification = document.createElement('div');
-        notification.className = 'animate__animated animate__fadeInRight px-6 py-4 rounded-lg shadow-xl bg-green-500 text-white font-medium';
-        notification.textContent = 'Thank you for your message! We will get back to you soon.';
-        document.getElementById('notifications').appendChild(notification);
+        showNotification('Thank you for your message! We will get back to you soon.', 'success');
         
-        // Hide after 4 seconds
-        setTimeout(() => {
-          notification.classList.remove('animate__fadeInRight');
-          notification.classList.add('animate__fadeOutRight');
-          setTimeout(() => {
-            notification.remove();
-          }, 300);
-        }, 4000);
-        
+        // Reset form
         this.reset();
+        
       } catch (error) {
-        const notification = document.createElement('div');
-        notification.className = 'animate__animated animate__fadeInRight px-6 py-4 rounded-lg shadow-xl bg-red-500 text-white font-medium';
-        notification.textContent = 'Error sending message. Please try again later.';
-        document.getElementById('notifications').appendChild(notification);
-        
-        setTimeout(() => {
-          notification.classList.remove('animate__fadeInRight');
-          notification.classList.add('animate__fadeOutRight');
-          setTimeout(() => {
-            notification.remove();
-          }, 300);
-        }, 4000);
-        
         console.error("Error storing contact message:", error);
+        showNotification('Error sending message. Please try again later.', 'error');
+      } finally {
+        // Re-enable submit button
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Message';
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
       }
     });
 
-    // Add some interactive animations
+    // Add interactive animations
     document.addEventListener('DOMContentLoaded', function() {
       const formInputs = document.querySelectorAll('input, textarea');
       formInputs.forEach(input => {

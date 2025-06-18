@@ -26,7 +26,7 @@
 </head>
 <body class="bg-brand-black text-white font-['Inter'] min-h-screen flex flex-col">
   <!-- Navigation -->
-    <nav class="bg-brand-dark-purple shadow-lg">
+  <nav class="bg-brand-dark-purple shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
@@ -175,8 +175,27 @@
     </div>
   </footer>
 
+  <script>
+    // Mobile menu toggle function
+    function toggleMobileMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      const hamburgerIcon = document.querySelector('.block');
+      const closeIcon = document.querySelector('.hidden');
+      
+      if (mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.remove('hidden');
+        hamburgerIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+      } else {
+        mobileMenu.classList.add('hidden');
+        hamburgerIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+      }
+    }
+  </script>
+
   <script type="module">
-    import { auth } from "firebase-config.js";
+    import { auth } from "./firebase-config.js";
     import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
@@ -202,7 +221,7 @@
     });
 
     window.logout = function() {
-      import('auth.js').then(module => {
+      import('./auth.js').then(module => {
         module.logout();
       });
     };
